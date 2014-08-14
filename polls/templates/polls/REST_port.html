@@ -1,0 +1,58 @@
+{% extends "base_iframe.html" %}
+{% block body_main_title %}交换机PORT情况{% endblock body_main_title %}
+
+{% block body_main_content %}
+{% if records %}
+<table class="table table-bordered table-condensed table-hover" id="table1">
+  <thead>
+    <tr>
+      <th>MAC</th>
+      <th>PORT #</th>
+      <th>R-Rates</th>
+      <th>T-Rates</th>
+      <th>R-Pkt</th>
+      <th>T-Pkt</th>
+      <th>R-Bytes</th>
+      <th>T-Bytes</th>
+      <th>R-Drops</th>
+      <th>T-Drops</th>
+
+      <th>Other Err</th>
+    </tr>
+  </thead>
+  <tbody>
+  	{% for MAC,switch in records.items %}
+  		{% for port_number, item in switch.items %}
+        <tr>
+          {% if forloop.first %}
+          <td rowspan="5">{{MAC}}</td>
+          {% endif %}
+          <td>{{port_number}}</td>
+          <td class="rate">{{item.receiveRate}}</td>
+          <td class="rate">{{item.transmitRate}}</td>
+          <td>{{item.receivePackets}}</td>
+          <td>{{item.transmitPackets}}</td>
+          <td>{{item.receiveBytes}}</td>
+          <td>{{item.transmitBytes}}</td>
+          <td>{{item.receiveDropped}}</td>
+          <td>{{item.transmitDropped}}</td>
+          <td>{{item.otherErrors}}</td>
+        </tr>
+        {% endfor %}
+    {% endfor %}
+
+  </tbody>
+</table>
+{% else %}
+    <p>Somthing Wrong with the REST API ! Check http://59.66.19.126:8080/wm/core/switch/all/port/json</p>
+{% endif %}
+{% endblock body_main_content %} 
+
+{% block footer_javascript_page %}
+<script>
+$(".rate").each(function(){    //找第三列且大于0的单元格高亮显示。每个
+if($(this).html()>0) $(this).addClass("danger");    //设置反值（jQuery方法）
+});
+
+</script>
+{% endblock footer_javascript_page %}

@@ -1,0 +1,399 @@
+{% extends "base.html" %}
+{% block title %}模块管理{% endblock %}
+
+{% block body_main_title %}
+<div class="row-fluid">
+
+  <div class="span10 offset0">
+    <h1 class="page-header ">模块管理 <small> 模块详细信息 </small></h1>
+  </div>
+</div>
+{% endblock body_main_title %}
+{% block body_main_content %}
+
+{# 删除模块确认操作 #}
+{% ifequal try_delete 'true' %}
+<div class="alert alert-block alert-error fade in">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <h2>操作有风险，请确认!!</h2>
+  <p>删除模块可能导致相关的子系统出现问题，请务必认真确认本页的信息后再执行操作 :)</p>
+  <form class="form-horizontal" action="{% url 'mrmpf:index' %}model/delete/{{req_id}}/" method="post">
+    {%csrf_token%}
+    <button type="submit" class="btn btn-danger">确认删除</button>
+    <a class="btn btn-primary btn-large" href="{% url 'mrmpf:model' %}">
+      放弃操作
+    </a>
+    <input type="hidden" name="confirm" value="true" />
+    <input type="hidden" name="req_id" value="{{req_id}}" />
+  </form>
+</div>
+
+{% else %}
+{% if have_right %}
+{# 操作按钮组 #}
+<div class="btn-group pull-right">
+  <a class="btn btn-primary" id="toggle_modify_model" href="#">更新模块</a>
+  <a class="btn btn-danger" id="delete_model" href="{% url 'mrmpf:index' %}model/delete/{{req_id}}/">删除该模块</a>
+</div>
+{% endif %}
+{% endifequal %}
+
+
+{# 更新模块 #}
+<div class="well hide" id="modify_model">
+  <div class="modal-header"> <a href="#" id="close_modify_model" class="close" >x</a>
+    <h4>更新拓扑</h4>
+      <form class="form-horizontal" action="{% url 'mrmpf:model_modify' %}" method="post">
+        {%csrf_token%}
+        <div class="control-group">
+          <label class="control-label" for="name">模块名称</label>
+          <div class="controls">
+            <input id="name" name="name" type="text" placeholder="请输入模块名称">
+          </div>
+        </div>
+
+
+      <div class="control-group">
+        <label class="control-label" for="mod_type">模块类型</label>
+        <div class="controls">
+            <select name="mod_type" >       
+              <option value="0">非注册模块</option>
+              <option value="1">注册模块</option>
+            </select>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="cpucore_require">模块的CPU核数需求</label>
+        <div class="controls">
+          <input id="cpucore_require" name="cpucore_require" type="number" placeholder="请输入所需cpu核心数">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="perf_cpucore_require">模块的推荐CPU核数</label>
+        <div class="controls">
+          <input id="perf_cpucore_require" name="perf_cpucore_require" type="number" placeholder="请输入推荐的cpu核心数">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="mem_require">模块内存需求(GB)</label>
+        <div class="controls">
+          <input id="mem_require" name="mem_require" type="number" placeholder="请输入模块内存需求">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="perf_mem_require">模块的推荐内存需求(GB)</label>
+        <div class="controls">
+          <input id="perf_mem_require" name="perf_mem_require" type="number" placeholder="请输入模块的推荐内存需求">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="disk_require">模块硬盘需求(GB)</label>
+        <div class="controls">
+          <input id="disk_require" name="disk_require" type="number" placeholder="请输入模块所需硬盘大小">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="port_num">模块端口个数</label>
+        <div class="controls">
+          <input id="port_num" name="port_num" type="number" placeholder="请输入模块端口个数">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="port_interval">端口区间</label>
+        <div class="controls">
+          <input id="port_interval" name="port_interval" type="text" placeholder="例如：6000-6120">
+          <p class="help-block">格式举例：6000-6120</p>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label class="control-label" for="fix_username">fix_username</label>
+        <div class="controls">
+          <input id="fix_username" name="fix_username" type="text" placeholder="fix_username">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="fix_password">fix_password</label>
+        <div class="controls">
+          <input id="fix_password" name="fix_password" type="text" placeholder="请输入fix_password">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="fix_workpath">fix_workpath</label>
+        <div class="controls">
+          <input id="fix_workpath" name="fix_workpath" type="text" placeholder="请输入fix_workpath">
+        </div>
+      </div>
+
+        <div class="dynamic_form">
+        </div>
+        
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">确认提交申请</button>
+          <input type="hidden" name="req_id" value="{{req_id}}" />
+        </div>
+      </form>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<div id="content-table">
+
+{# 详细表格 #}
+
+<div id="modeldetails" class="fade in hide">
+  <button type="button" class="close hide_detail">×</button>
+  <h4 id="modelname"></h4>
+    <div class= "span6">
+      CPU需求<div class="progress progress-info">
+        <div id="cpu" class="bar" style="width: 0%"></div>
+      </div>
+      MEMORY需求<div class="progress progress-success">
+        <div id="mem" class="bar" style="width: 0%"></div>
+      </div>
+      DISK需求<div class="progress progress-warning">
+        <div id="disk" class="bar" style="width: 0%"></div>
+      </div>
+    </div>
+    <div class= "span6">
+      other details...
+    </div>
+</div>
+<div id="content-table">
+  <legend>模块详细信息</legend>
+  <table class="table table-striped table-bordered table-condensed tablesorter" id="tablesorter">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>名称</th>
+        <th>所属子系统</th>
+        <th>CPU核心数量</th>
+        <th>推荐cpu数量</th>
+        <th>占用内存</th>
+        <th>推荐内存大小</th>
+        <th>占用硬盘</th>
+        <th>端口数量</th>
+        <th>端口区间</th>
+        <th>用户名</th>
+        <th>密码</th>
+        <th>工作目录</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in model_records %}
+      <tr>
+        <td class="model_id">{{item.id}}</td>
+        <td class="model_name">{{item.name}}</td>
+        <td class="micro_sys">{{item.micro_sys}}</td>
+        <td class="cpucore_require">{{item.cpucore_require}}</td>
+        <td class="perf_cpucore_require">{{item.perf_cpucore_require}}</td>
+        <td class="mem_require">{{item.mem_require}}</td>
+        <td class="perf_mem_require">{{item.perf_mem_require}}</td>
+        <td class="disk_require">{{item.disk_require}}</td>
+        <td class="port_num">{{item.port_num}}</td>
+        <td class="port_interval">{{item.port_interval}}</td>
+        <td class="fix_username">{{item.fix_username}}</td>
+        <td class="fix_password">{{item.fix_password}}</td>
+        <td class="fix_workpath">{{item.fix_workpath}}</td>
+      </tr> 
+    {% endfor %}
+    </tbody>
+  </table>
+  
+</div>
+
+
+{# 包含该模块的子系统 #}
+
+{% if subsys_records %}
+<div id="content-table">
+  <legend>包含该模块的子系统信息</legend>
+  <table class="table table-striped table-bordered table-condensed tablesorter" id="tablesorter">
+    <thead>
+      <tr>
+        <th>子系统id</th>
+        <th>子系统名称</th>
+        <th>产品线id</th>
+        <th>产品线名称</th>
+        <th>trl_product_line</th>
+        <th>trl用户名</th>
+        <th>is_default</th>
+        <th>is_delete</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in subsys_records %}
+      <tr>
+        {# <td class="id">{{item.id}}</td> #}
+        <td class="micro_sys_id">{{item.micro_sys_id}}</td>
+        <td class="name">{{item.name}}</td>
+        <td class="product_line">{{item.product_line}}</td>
+        <td class="product_line_name">{{item.product_line_name}}</td>
+        <td class="trl_product_line">{{item.trl_product_line}}</td>
+        <td class="trl_username">{{item.trl_username}}</td>
+        {# <td class="trl_password">{{item.trl_password}}</td> #}
+        <td class="is_default">{{item.is_default}}</td>
+        <td class="is_delete">{{item.is_delete}}</td>
+        <td>
+          <a href="{% url 'mrmpf:index' %}subsys/detailinfo/{{item.micro_sys_id}}/" class="btn btn-small btn-info"  data-id="{{item.micro_sys_id}}">Details</a>
+        </td>
+      </tr> 
+    {% endfor %}
+    </tbody>
+  </table>
+  <div id="pager" class="pager">
+    <form class="form-inline">
+      <a class="btn first" href="#"><i class="icon-fast-backward"></i></a>
+      <a class="btn prev" href="#"><i class="icon-backward"></i></a>
+      <div class="input-prepend">
+        <span class="add-on">每页数量</span>
+        <select class="pagesize span6">
+        <option value="5">5</option>
+        <option selected="selected" value="10">10</option>
+        <option value="20">20</option>
+        <option  value="30">30</option>
+        <option  value="50">50</option>
+      </select>
+      </div>
+      <div class="input-prepend">
+        <span class="add-on">当前页数</span>
+        <input type="text" class="span3 pagedisplay" id="pagedisplay" disabled>
+      </div>
+      <a class="btn next" href="#"><i class="icon-forward"></i></a>
+      <a class="btn last" href="#"><i class="icon-fast-forward"></i></a>
+    </form>
+  </div>
+  {% else %}
+  {# 提示信息 #}
+  {% for note in subsys_noti %}
+  <h5>{{note}}</h5>
+  {% endfor %}
+  {% endif %}
+
+
+{% endblock body_main_content %}  
+
+{% block footer_javascript_page %}
+<script type="text/javascript">
+$(function() {
+    $("#tablesorter").tablesorter({widthFixed: true})
+    .tablesorterPager({container: $("#pager")});
+});
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+    {# 隐藏筛选 #}
+    $(function() {
+        $("#showhide").click(function() {
+            $("#content-control").slideToggle("slow");
+        });
+    });
+    {# 添加任务 #}
+    $(function() {
+      $("#toggle_modify_model").click(function() {
+        $("#modify_model").slideToggle("slow");
+        $("#content-control").hide("slow");
+      });
+    });
+    {# 添加任务 #}
+    $(function() {
+        $("#close_modify_model").click(function() {
+            $("#modify_model").hide("slow");
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+$(".hide_detail").click(function() {
+  $("#modeldetails").hide("1000");
+});
+$(".model_name").click(function() {
+  var modelname=$(this).html(); 
+  var cpu="width: "+ $(this).parent().find(".cpucore_require").html()/16*100+"%";
+  var mem="width: "+ $(this).parent().find(".mem_require").html()+"%";
+  var disk="width: "+ $(this).parent().find(".disk_require").html()+"%";
+  $("#modeldetails").find("#modelname").html("模块名称:"+modelname);
+  $("#modeldetails").find("#cpu").attr({style:cpu});
+  $("#modeldetails").find("#mem").attr({style:mem});
+  $("#modeldetails").find("#disk").attr({style:disk});
+  $("#modeldetails").show("1000");
+});
+</script>
+
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    forceParse: 0,
+    showMeridian: 1
+    });
+</script>
+
+
+{# 显示model详细信息 #}
+<script type="text/javascript">
+$(".hide_detail").click(function() {
+  $("#modeldetails").hide("1000");
+});
+$(".model_name").click(function() {
+  var modelname=$(this).html(); 
+  var cpu="width: "+ $(this).parent().find(".cpucore_require").html()/16*100+"%";
+  var mem="width: "+ $(this).parent().find(".mem_require").html()+"%";
+  var disk="width: "+ $(this).parent().find(".disk_require").html()+"%";
+  $("#modeldetails").find("#modelname").html("模块名称:"+modelname);
+  $("#modeldetails").find("#cpu").attr({style:cpu});
+  $("#modeldetails").find("#mem").attr({style:mem});
+  $("#modeldetails").find("#disk").attr({style:disk});
+  $("#modeldetails").show("1000");
+});
+</script>
+
+
+
+{# dynamic_form #}
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#mod_number").change(function(){
+    var rep_number=$(this).val();
+    $(".dynamic_form").html("");
+    for(var i=0;i<rep_number;i++){
+      $(".dynamic_form").append('<legend>模块'+(i+1).toString()+'</legend>');
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="platform_'+i.toString()+'">platform</label><div class="controls"><input id="platform_'+i.toString()+'" name="platform_'+i.toString()+'" type="text" placeholder="请输入platform"></div></div>');
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="single_instance_'+i.toString()+'">single_instance</label><div class="controls"><input id="single_instance_'+i.toString()+'" name="single_instance_'+i.toString()+'" type="text" placeholder="请输入single_instance"></div></div>'); 
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="machine_group_'+i.toString()+'">machine_group</label><div class="controls"><input id="machine_group_'+i.toString()+'" name="machine_group_'+i.toString()+'" type="text" placeholder="请输入machine_group"></div></div>');
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="is_vm_'+i.toString()+'">is_vm</label><div class="controls"><input id="is_vm_'+i.toString()+'" name="is_vm_'+i.toString()+'" type="text" placeholder="请输入is_vm"></div></div>'); 
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="cluster_type_'+i.toString()+'">cluster_type</label><div class="controls"><input id="cluster_type_'+i.toString()+'" name="cluster_type_'+i.toString()+'" type="text" placeholder="请输入cluster_type"></div></div>');
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="exclusive_'+i.toString()+'">exclusive</label><div class="controls"><input id="exclusive_'+i.toString()+'" name="exclusive_'+i.toString()+'" type="text" placeholder="请输入exclusive"></div></div>');   
+    }
+  });
+});
+</script>
+
+
+
+
+{% endblock footer_javascript_page %}
+

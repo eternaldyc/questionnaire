@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Welcome to SDNController+!{% endblock %}
+
+
+{% block body %}
+<body class="container default-bg">
+<div class="container">
+
+  <div class="jumbotron">
+    <h1>感谢您的参与!</h1>
+    <p>您已经完成所有的题目。您抽到的题目编号是：{{question_id_list}}</p>
+    <p><a href="/polls/" class="btn btn-primary btn-lg" role="button">重新开始</a></p>
+  </div>
+
+</div>
+</body>
+{% endblock body %}  
+	  
+
+{% block footer_javascript_page %}
+
+
+
+
+<script>
+function IsMatchingAddress(str){
+    var myRegExp = /[a-z0-9-]{1,30}@[a-z0-9-]{1,65}.[a-z]+/ ;
+    return myRegExp.test(str);
+}
+function IsMatchingAge(str){
+    var myRegExp = /^[0-9-]+$/ ;
+    return myRegExp.test(str) && str.length <=2;
+}
+function IsNotEmpty(str){
+    if(str){
+    var length = str.replace(/(^\s+)|(\s+$)/g, "").length;
+    return length !== 0;
+    }
+    else{ return false;}
+}
+
+
+
+$(document).ready(function(){
+  $("#button_begin").click(function(){
+    var check_ok=false;
+    if (IsMatchingAddress($("#inputEmail").val()) && IsMatchingAge($("#inputAge").val()) && $('input[name="inputGender"]:checked').val() )
+      {
+          alert("ok");
+          $("#form_user_info").submit();
+      }
+    else
+      {
+      $("#err_msg").html("请填写正确的信息后继续~");
+      }
+  });
+});
+
+</script>
+{% endblock footer_javascript_page %}

@@ -1,0 +1,207 @@
+[05/Jul/2014 20:01:37] "GET / HTTP/1.1" 500 158796
+Validating models...
+
+0 errors found
+July 05, 2014 - 20:01:10
+Django version 1.6.5, using settings 'mysite.settings'
+Starting development server at http://127.9.224.129:8080/
+Quit the server with CONTROL-C.
+Unhandled exception in thread started by <function wrapper at 0x1390aa0>
+Traceback (most recent call last):
+  File "/var/lib/stickshift/53ad8df44382ecc00e000118/app-root/data/lib/python/site-packages/django/utils/autoreload.py", line 100, in wrapper
+    filename = traceback.extract_tb(tb)[-1][0]
+  File "/usr/lib64/python2.6/traceback.py", line 100, in extract_tb
+    linecache.checkcache(filename)
+AttributeError: 'NoneType' object has no attribute 'checkcache'
+/var/lib/stickshift/53ad8df44382ecc00e000118/app-root/data/lib/python/site-packages/django/conf/__init__.py:49: DeprecationWarning: The TEMPLATE_DIRS setting must be a tuple. Please fix your settings, as auto-correction is now deprecated.
+  self._wrapped = Settings(settings_module)
+Validating models...
+
+0 errors found
+July 05, 2014 - 20:02:45
+Django version 1.6.5, using settings 'mysite.settings'
+Starting development server at http://127.9.224.129:8080/
+Quit the server with CONTROL-C.
+/var/lib/stickshift/53ad8df44382ecc00e000118/app-root/data/lib/python/site-packages/django/conf/__init__.py:49: DeprecationWarning: The TEMPLATE_DIRS setting must be a tuple. Please fix your settings, as auto-correction is now deprecated.
+  self._wrapped = Settings(settings_module)
+[05/Jul/2014 20:04:12] "GET / HTTP/1.1" 200 15050
+[05/Jul/2014 20:04:13] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 109518
+[05/Jul/2014 20:04:13] "GET /www.googlestatic.com HTTP/1.1" 404 2140
+[05/Jul/2014 20:04:14] "GET /static/wireless_API.css HTTP/1.1" 200 2588
+[05/Jul/2014 20:04:14] "GET /static/bootstrap/js/jquery-2.1.1.min.js HTTP/1.1" 200 84245
+[05/Jul/2014 20:04:14] "GET /static/bootstrap/css/bootstrap-datetimepicker.css HTTP/1.1" 200 12289
+[05/Jul/2014 20:04:14] "GET /static/chosen/chosen.css HTTP/1.1" 200 13586
+[05/Jul/2014 20:04:14] "GET /static/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 31819
+[05/Jul/2014 20:04:14] "GET /static/bootstrap/css/bootstrap-responsive.css HTTP/1.1" 200 22102
+[05/Jul/2014 20:04:14] "GET /static/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js HTTP/1.1" 200 794
+[05/Jul/2014 20:04:15] "GET /static/bootstrap/js/bootstrap-datetimepicker.js HTTP/1.1" 200 54266
+[05/Jul/2014 20:04:15] "GET /static/highcharts/exporting.js HTTP/1.1" 200 7320
+[05/Jul/2014 20:04:15] "GET /static/highcharts/highcharts.js HTTP/1.1" 200 146400
+[05/Jul/2014 20:04:16] "GET /static/chosen/chosen.proto.js HTTP/1.1" 200 40895
+[05/Jul/2014 20:04:16] "GET /static/chosen/chosen.jquery.js HTTP/1.1" 200 40437
+[05/Jul/2014 20:04:16] "GET /static/tablesorter/jquery.tablesorter.pager.js HTTP/1.1" 200 4100
+[05/Jul/2014 20:04:16] "GET /static/tablesorter/jquery.tablesorter.js HTTP/1.1" 200 40948
+[05/Jul/2014 20:04:17] "GET /static/favicon.ico HTTP/1.1" 404 1659
+[05/Jul/2014 20:04:58] "GET / HTTP/1.1" 200 15058
+[05/Jul/2014 20:04:58] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 304 0
+[05/Jul/2014 20:04:58] "GET /static/bootstrap/css/bootstrap-responsive.css HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/bootstrap/css/bootstrap-datetimepicker.css HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/wireless_API.css HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/chosen/chosen.css HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/bootstrap/js/jquery-2.1.1.min.js HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/chosen/chosen.jquery.js HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/bootstrap/js/bootstrap.min.js HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/bootstrap/js/bootstrap-datetimepicker.js HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/chosen/chosen.proto.js HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/highcharts/highcharts.js HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/highcharts/exporting.js HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/tablesorter/jquery.tablesorter.js HTTP/1.1" 304 0
+[05/Jul/2014 20:04:59] "GET /static/tablesorter/jquery.tablesorter.pager.js HTTP/1.1" 304 0
+[05/Jul/2014 20:05:31] "GET / HTTP/1.1" 200 15052
+[05/Jul/2014 20:06:19] "GET / HTTP/1.1" 200 15059
+[05/Jul/2014 20:06:19] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 304 0
+[05/Jul/2014 20:06:19] "GET /static/bootstrap/css/bootstrap-responsive.css HTTP/1.1" 304 0
+[05/Jul/2014 20:06:19] "GET /static/bootstrap/css/bootstrap-datetimepicker.css HTTP/1.1" 304 0
+[05/Jul/2014 20:06:19] "GET /static/wireless_API.css HTTP/1.1" 304 0
+[05/Jul/2014 20:06:19] "GET /static/chosen/chosen.css HTTP/1.1" 304 0
+[05/Jul/2014 20:06:20] "GET /static/bootstrap/js/jquery-2.1.1.min.js HTTP/1.1" 304 0
+[05/Jul/2014 20:06:20] "GET /static/chosen/chosen.proto.js HTTP/1.1" 304 0
+[05/Jul/2014 20:06:20] "GET /static/bootstrap/js/bootstrap.min.js HTTP/1.1" 304 0
+[05/Jul/2014 20:06:20] "GET /static/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js HTTP/1.1" 304 0
+[05/Jul/2014 20:06:20] "GET /static/bootstrap/js/bootstrap-datetimepicker.js HTTP/1.1" 304 0
+[05/Jul/2014 20:06:20] "GET /static/chosen/chosen.jquery.js HTTP/1.1" 304 0
+[05/Jul/2014 20:06:20] "GET /static/highcharts/highcharts.js HTTP/1.1" 304 0
+[05/Jul/2014 20:06:20] "GET /static/highcharts/exporting.js HTTP/1.1" 304 0
+[05/Jul/2014 20:06:20] "GET /static/tablesorter/jquery.tablesorter.pager.js HTTP/1.1" 304 0
+[05/Jul/2014 20:06:20] "GET /static/tablesorter/jquery.tablesorter.js HTTP/1.1" 304 0
+[05/Jul/2014 20:07:28] "GET / HTTP/1.1" 200 15053
+[05/Jul/2014 20:07:28] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 304 0
+[05/Jul/2014 20:07:28] "GET /static/bootstrap/css/bootstrap-responsive.css HTTP/1.1" 304 0
+[05/Jul/2014 20:07:28] "GET /static/bootstrap/css/bootstrap-datetimepicker.css HTTP/1.1" 304 0
+[05/Jul/2014 20:07:28] "GET /static/chosen/chosen.css HTTP/1.1" 304 0
+[05/Jul/2014 20:07:28] "GET /static/wireless_API.css HTTP/1.1" 304 0
+[05/Jul/2014 20:07:28] "GET /static/bootstrap/js/jquery-2.1.1.min.js HTTP/1.1" 304 0
+[05/Jul/2014 20:07:28] "GET /static/bootstrap/js/bootstrap.min.js HTTP/1.1" 304 0
+[05/Jul/2014 20:07:28] "GET /static/bootstrap/js/bootstrap-datetimepicker.js HTTP/1.1" 304 0
+[05/Jul/2014 20:07:28] "GET /static/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js HTTP/1.1" 304 0
+[05/Jul/2014 20:07:28] "GET /static/chosen/chosen.jquery.js HTTP/1.1" 304 0
+[05/Jul/2014 20:07:28] "GET /static/chosen/chosen.proto.js HTTP/1.1" 304 0
+[05/Jul/2014 20:07:29] "GET /static/highcharts/highcharts.js HTTP/1.1" 304 0
+[05/Jul/2014 20:07:29] "GET /static/highcharts/exporting.js HTTP/1.1" 304 0
+[05/Jul/2014 20:07:29] "GET /static/tablesorter/jquery.tablesorter.pager.js HTTP/1.1" 304 0
+[05/Jul/2014 20:07:29] "GET /static/tablesorter/jquery.tablesorter.js HTTP/1.1" 304 0
+[10/Jul/2014 22:23:42] "GET / HTTP/1.1" 200 16826
+[10/Jul/2014 22:23:43] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 304 0
+[10/Jul/2014 22:23:43] "GET /static/bootstrap/css/bootstrap-responsive.css HTTP/1.1" 304 0
+[10/Jul/2014 22:23:43] "GET /static/bootstrap/css/bootstrap-datetimepicker.css HTTP/1.1" 304 0
+[10/Jul/2014 22:23:43] "GET /static/chosen/chosen.css HTTP/1.1" 304 0
+[10/Jul/2014 22:23:43] "GET /static/wireless_API.css HTTP/1.1" 304 0
+[10/Jul/2014 22:23:43] "GET /static/bootstrap/js/jquery-2.1.1.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:23:43] "GET /static/bootstrap/js/bootstrap.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:23:43] "GET /static/bootstrap/js/bootstrap-datetimepicker.js HTTP/1.1" 304 0
+[10/Jul/2014 22:23:43] "GET /static/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js HTTP/1.1" 304 0
+[10/Jul/2014 22:23:43] "GET /static/chosen/chosen.jquery.js HTTP/1.1" 304 0
+[10/Jul/2014 22:23:43] "GET /static/chosen/chosen.proto.js HTTP/1.1" 304 0
+[10/Jul/2014 22:23:43] "GET /static/highcharts/highcharts.js HTTP/1.1" 304 0
+[10/Jul/2014 22:23:44] "GET /static/tablesorter/jquery.tablesorter.js HTTP/1.1" 304 0
+[10/Jul/2014 22:23:44] "GET /static/highcharts/exporting.js HTTP/1.1" 304 0
+[10/Jul/2014 22:23:44] "GET /static/tablesorter/jquery.tablesorter.pager.js HTTP/1.1" 304 0
+[10/Jul/2014 22:23:44] "GET /static/favicon.ico HTTP/1.1" 404 1655
+[10/Jul/2014 22:24:59] "GET / HTTP/1.1" 200 16820
+[10/Jul/2014 22:25:00] "GET /static/wireless_API.css HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/bootstrap/css/bootstrap-responsive.css HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/chosen/chosen.css HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/bootstrap/css/bootstrap-datetimepicker.css HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/bootstrap/js/jquery-2.1.1.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/bootstrap/js/bootstrap.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/bootstrap/js/bootstrap-datetimepicker.js HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/chosen/chosen.jquery.js HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/chosen/chosen.proto.js HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/highcharts/highcharts.js HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/highcharts/exporting.js HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/tablesorter/jquery.tablesorter.js HTTP/1.1" 304 0
+[10/Jul/2014 22:25:00] "GET /static/tablesorter/jquery.tablesorter.pager.js HTTP/1.1" 304 0
+[10/Jul/2014 22:26:07] "GET / HTTP/1.1" 200 17127
+[10/Jul/2014 22:26:07] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 304 0
+[10/Jul/2014 22:26:07] "GET /static/bootstrap/css/bootstrap-datetimepicker.css HTTP/1.1" 304 0
+[10/Jul/2014 22:26:07] "GET /static/bootstrap/css/bootstrap-responsive.css HTTP/1.1" 304 0
+[10/Jul/2014 22:26:07] "GET /static/wireless_API.css HTTP/1.1" 304 0
+[10/Jul/2014 22:26:07] "GET /static/chosen/chosen.css HTTP/1.1" 304 0
+[10/Jul/2014 22:26:08] "GET /static/bootstrap/js/jquery-2.1.1.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:26:08] "GET /static/bootstrap/js/bootstrap.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:26:08] "GET /static/bootstrap/js/bootstrap-datetimepicker.js HTTP/1.1" 304 0
+[10/Jul/2014 22:26:08] "GET /static/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js HTTP/1.1" 304 0
+[10/Jul/2014 22:26:08] "GET /static/chosen/chosen.jquery.js HTTP/1.1" 304 0
+[10/Jul/2014 22:26:08] "GET /static/chosen/chosen.proto.js HTTP/1.1" 304 0
+[10/Jul/2014 22:26:08] "GET /static/highcharts/highcharts.js HTTP/1.1" 304 0
+[10/Jul/2014 22:26:08] "GET /static/highcharts/exporting.js HTTP/1.1" 304 0
+[10/Jul/2014 22:26:08] "GET /static/tablesorter/jquery.tablesorter.js HTTP/1.1" 304 0
+[10/Jul/2014 22:26:08] "GET /static/tablesorter/jquery.tablesorter.pager.js HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET / HTTP/1.1" 200 17127
+[10/Jul/2014 22:27:50] "GET /static/wireless_API.css HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET /static/bootstrap/css/bootstrap-datetimepicker.css HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET /static/bootstrap/css/bootstrap-responsive.css HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET /static/chosen/chosen.css HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET /static/bootstrap/js/jquery-2.1.1.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET /static/bootstrap/js/bootstrap.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET /static/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET /static/chosen/chosen.jquery.js HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET /static/bootstrap/js/bootstrap-datetimepicker.js HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET /static/chosen/chosen.proto.js HTTP/1.1" 304 0
+[10/Jul/2014 22:27:50] "GET /static/highcharts/highcharts.js HTTP/1.1" 304 0
+[10/Jul/2014 22:27:51] "GET /static/highcharts/exporting.js HTTP/1.1" 304 0
+[10/Jul/2014 22:27:51] "GET /static/tablesorter/jquery.tablesorter.pager.js HTTP/1.1" 304 0
+[10/Jul/2014 22:27:51] "GET /static/tablesorter/jquery.tablesorter.js HTTP/1.1" 304 0
+[10/Jul/2014 22:28:10] "GET / HTTP/1.1" 200 17127
+[10/Jul/2014 22:28:11] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/wireless_API.css HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/chosen/chosen.css HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/bootstrap/css/bootstrap-datetimepicker.css HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/bootstrap/css/bootstrap-responsive.css HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/bootstrap/js/jquery-2.1.1.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/bootstrap/js/bootstrap.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/bootstrap/js/bootstrap-datetimepicker.js HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/chosen/chosen.jquery.js HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/chosen/chosen.proto.js HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/highcharts/highcharts.js HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/highcharts/exporting.js HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/tablesorter/jquery.tablesorter.js HTTP/1.1" 304 0
+[10/Jul/2014 22:28:11] "GET /static/tablesorter/jquery.tablesorter.pager.js HTTP/1.1" 304 0
+[10/Jul/2014 22:29:51] "GET / HTTP/1.1" 200 17133
+[10/Jul/2014 22:29:51] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 304 0
+[10/Jul/2014 22:29:51] "GET /static/wireless_API.css HTTP/1.1" 304 0
+[10/Jul/2014 22:29:51] "GET /static/chosen/chosen.css HTTP/1.1" 304 0
+[10/Jul/2014 22:29:51] "GET /static/bootstrap/css/bootstrap-responsive.css HTTP/1.1" 304 0
+[10/Jul/2014 22:29:51] "GET /static/bootstrap/css/bootstrap-datetimepicker.css HTTP/1.1" 304 0
+[10/Jul/2014 22:29:51] "GET /static/bootstrap/js/jquery-2.1.1.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:29:51] "GET /static/bootstrap/js/bootstrap.min.js HTTP/1.1" 304 0
+[10/Jul/2014 22:29:51] "GET /static/chosen/chosen.jquery.js HTTP/1.1" 304 0
+[10/Jul/2014 22:29:51] "GET /static/bootstrap/js/bootstrap-datetimepicker.js HTTP/1.1" 304 0
+[10/Jul/2014 22:29:51] "GET /static/chosen/chosen.proto.js HTTP/1.1" 304 0
+[10/Jul/2014 22:29:51] "GET /static/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js HTTP/1.1" 304 0
+[10/Jul/2014 22:29:52] "GET /static/highcharts/highcharts.js HTTP/1.1" 304 0
+[10/Jul/2014 22:29:52] "GET /static/highcharts/exporting.js HTTP/1.1" 304 0
+[10/Jul/2014 22:29:52] "GET /static/tablesorter/jquery.tablesorter.pager.js HTTP/1.1" 304 0
+[10/Jul/2014 22:29:52] "GET /static/tablesorter/jquery.tablesorter.js HTTP/1.1" 304 0
+[11/Jul/2014 16:37:27] "GET / HTTP/1.1" 200 17133
+[11/Jul/2014 16:37:28] "GET /static/bootstrap/css/bootstrap.min.css HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/bootstrap/css/bootstrap-responsive.css HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/bootstrap/css/bootstrap-datetimepicker.css HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/chosen/chosen.css HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/bootstrap/js/jquery-2.1.1.min.js HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/wireless_API.css HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/bootstrap/js/bootstrap.min.js HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/bootstrap/js/bootstrap-datetimepicker.js HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/chosen/chosen.jquery.js HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/chosen/chosen.proto.js HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/highcharts/highcharts.js HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/highcharts/exporting.js HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/tablesorter/jquery.tablesorter.js HTTP/1.1" 304 0
+[11/Jul/2014 16:37:28] "GET /static/tablesorter/jquery.tablesorter.pager.js HTTP/1.1" 304 0
+[11/Jul/2014 16:37:29] "GET /static/favicon.ico HTTP/1.1" 404 1655

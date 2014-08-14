@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Something Wrong happends!{% endblock %}
+
+
+{% block body_main_content %}
+                
+
+	  	<div class="hero-unit">
+			  <h1><p class="text-error">{{ error_title }}</p></h1>
+			  <p></p>
+			  {% for error in errors %}<p>{{ error }}</p>{% endfor %}
+			  <p>
+			    <a class="btn btn-primary btn-large" href="/">
+			      &larr;返回首页
+			    </a>
+			  </p>
+			</div>
+{% endblock body_main_content %} 

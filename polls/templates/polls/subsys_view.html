@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% block title %}模块管理{% endblock %}
+
+{% block body_main_title %}
+<div class="row-fluid">
+
+  <div class="span10 offset0">
+    <h1 class="page-header ">子系统管理 <small>子系统管理</small></h1>
+  </div>
+</div>
+{% endblock body_main_title %}
+{% block body_main_content %}
+{# 提示信息 #}
+
+{% if noti %}
+
+  <div class="alert fade in">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {% for note in noti %}
+    <p>{{note}}</p>
+    {% endfor %}
+  </div>
+
+{% endif %}
+
+{# 添加新子系统 #}
+{% if request.session.privilege %}
+
+<a class="btn btn-success" id="add_new_subsys" href="#add_subsys">添加子系统</a>
+<div class="well hide" id="add_subsys">
+  <div class="modal-header"> <a href="#" id="close_add_new_subsys" class="close" data-dismiss="modal">x</a>
+    <h4>新增子系统</h4>
+      <form class="form-horizontal" action="{% url 'mrmpf:subsys_add' %}" method="post">
+        {%csrf_token%}
+        <div class="control-group">
+          <label class="control-label" for="name">子系统名称</label>
+          <div class="controls">
+            <input id="name" name="name" type="text" placeholder="请输入子系统名称">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="product_line">产品线 </label>
+          <div class="controls">
+            <select name="product_line">
+              <option value="">请选择所属产品线</option>
+              {% for item in productline_list %}
+              <option value="{{item.id}}">{{item.name}}</option>
+              {% endfor %}
+            </select>
+
+          </div>
+        </div>
+        
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">确认提交申请</button>
+        </div>
+      </form>
+
+  </div>
+</div>
+
+{% endif %}
+
+
+
+{# 筛选功能 #}
+<button type="button" id="showhide" class="btn btn-link pull-right">显示/隐藏高级筛选</button>
+<div id="content-control" class="well">
+  <h4>高级筛选</h4>
+  <form id="advfilter" class="form-inline" action="{% url 'mrmpf:subsys_filter' %}" method="post">{%csrf_token%}
+      <label class="control-label" for="model">按包含的模块筛选 </label>
+        <select name="model" class="host_select span2">
+          <option value="">全部</option>
+          {% for model in model_list %}
+          <option value="{{model.id}}">{{model.name}}</option>
+          {% endfor %}
+        </select>
+    <button type="submit" class="btn btn-success pull-right">筛选结果</button>
+  </form>
+</div>
+
+
+
+
+{# 详细表格 #}
+{% if records %}
+<div id="content-table">
+  <legend>子系统详细信息</legend>
+  <table class="table table-striped table-bordered table-condensed tablesorter" id="tablesorter">
+    <thead>
+      <tr>
+        <th>子系统id</th>
+        <th>子系统名称</th>
+        {#<th>产品线id</th>#}
+        <th>产品线名称</th>
+        {#<th>trl_product_line</th>#}
+        {#<<th>trl用户名</th>#}
+        {#<<th>trl密码</th>#}
+        {#<<th>is_default</th>#}
+        {#<<th>is_delete</th>#}
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in records %}
+      {% ifequal item.is_delete "0" %}
+      <tr>
+        {# <td class="id">{{item.id}}</td> #}
+        <td class="micro_sys_id">{{item.micro_sys_id}}</td>
+        <td class="ms_name">{{item.ms_name}}</td>
+        {#<td class="product_line">{{item.product_line}}</td>#}
+        <td class="product_line_name">{{item.product_line_name}}</td>
+        {#<td class="trl_product_line">{{item.trl_product_line}}</td>#}
+        {#<td class="trl_username">{{item.trl_username}}</td>#}
+        {# <td class="trl_password">{{item.trl_password}}</td> #}
+        {#<td class="is_default">{{item.is_default}}</td>#}
+        {#<td class="is_delete">{{item.is_delete}}</td>#}
+        <td>
+          <a href="{% url 'mrmpf:index' %}subsys/detailinfo/{{item.micro_sys_id}}/" class="btn btn-small btn-info"  data-id="{{item.micro_sys_id}}">Details</a>
+        </td>
+      </tr> 
+      {% endifequal %}
+    {% endfor %}
+    </tbody>
+  </table>
+  <div id="pager" class="pager">
+    <form class="form-inline">
+      <a class="btn first" href="#"><i class="icon-fast-backward"></i></a>
+      <a class="btn prev" href="#"><i class="icon-backward"></i></a>
+      <div class="input-prepend">
+        <span class="add-on">每页数量</span>
+        <select class="pagesize span6">
+        <option value="5">5</option>
+        <option selected="selected" value="10">10</option>
+        <option value="20">20</option>
+        <option  value="30">30</option>
+        <option  value="50">50</option>
+      </select>
+      </div>
+      <div class="input-prepend">
+        <span class="add-on">当前页数</span>
+        <input type="text" class="span3 pagedisplay" id="pagedisplay" disabled>
+      </div>
+      <a class="btn next" href="#"><i class="icon-forward"></i></a>
+      <a class="btn last" href="#"><i class="icon-fast-forward"></i></a>
+    </form>
+  </div>
+  {% else %}
+  {# 提示信息 #}
+  {% for note in errors %}
+  <h5>{{note}}</h5>
+  {% endfor %}
+  {% endif %}
+</div>
+
+{% endblock body_main_content %}  
+
+{% block body_content_hidden %}
+
+
+{% endblock body_content_hidden %}
+
+
+
+
+
+{% block footer_javascript_page %}
+<script type="text/javascript">
+$(function() {
+    $("#tablesorter").tablesorter({widthFixed: true})
+    .tablesorterPager({container: $("#pager")});
+});
+</script>
+
+
+<script type="text/javascript">
+    {# 隐藏筛选 #}
+    $(function() {
+        $("#showhide").click(function() {
+            $("#content-control").slideToggle("slow");
+        });
+    });
+    {# 添加任务 #}
+    $(function() {
+      $("#add_new_subsys").click(function() {
+        $("#add_subsys").slideToggle("slow");
+        $("#content-control").hide("slow");
+      });
+    });
+    {# 添加任务 #}
+    $(function() {
+        $("#close_add_new_subsys").click(function() {
+            $("#add_subsys").hide("slow");
+        });
+    });
+</script>
+
+
+
+<script type="text/javascript">
+  $('.form_datetime').datetimepicker({
+      //language:  'fr',
+      weekStart: 1,
+      todayBtn:  1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 2,
+      forceParse: 0,
+      showMeridian: 1
+  });
+</script>
+
+<script type="text/javascript">
+  $(function(){
+    $('.host_select').chosen();
+});
+</script>
+{% endblock footer_javascript_page %}
+

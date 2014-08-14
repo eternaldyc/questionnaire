@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}AP状态信息{% endblock %}
+
+{% block body_main_title %}
+<div class="row">
+
+  <div class="col-md-10 col-md-offset-0">
+    <h1 class="page-header ">AP状态信息 <small>  </small></h1>
+  </div>
+</div>
+{% endblock body_main_title %}
+{% block body_main_content %}
+{# 提示信息 #}
+{% for note in noti %}
+<h5>{{note}}</h5>
+{% endfor %}
+
+
+
+
+{# 详细表格 #}
+<div id="content-table">
+  {% if AP_info_list %}
+  <legend>AP_info</legend>
+  <table class="table table-striped table-bordered table-condensed tablesorter" id="tablesorter">
+    <thead>
+      <tr>
+        <th>项目</th>
+        <th>内容</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in AP_info_list %}
+      <tr>
+        <td class="name">{{item.name}}</td>
+        <td class="value">{{item.value|safe}}</td>
+        <td class="action">{{item.action}}</td>
+      </tr> 
+    {% endfor %}
+    </tbody>
+  </table>
+  <div id="pager" class="pager">
+    <div class="row">
+      <div class="col-md-2">
+        <a class="btn first" href="#"><span class="glyphicon glyphicon-fast-backward"></span></a>
+        <a class="btn prev" href="#"><span class="glyphicon glyphicon-backward"></span></a>
+      </div>
+      <div class="col-md-3">
+        <div class="input-group">
+        <span class="input-group-addon">每页数量</span>
+        <select class="pagesize form-control" >
+          <option value="5">5</option>
+          <option selected="selected" value="10">10</option>
+          <option value="20">20</option>
+          <option  value="30">30</option>
+          <option  value="50">50</option>
+        </select>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="input-group">
+          <span class="input-group-addon">当前页数</span>
+          <input type="text" class="pagedisplay form-control" id="pagedisplay" disabled>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <a class="btn next" href="#"><span class="glyphicon glyphicon-forward"></span></a>
+        <a class="btn last" href="#"><span class="glyphicon glyphicon-fast-forward"></span></a>
+      </div>
+    </div>
+
+  </div>
+  {% else %}
+  {# 提示信息 #}
+  {% for note in errors %}
+  <h5>{{note}}</h5>
+  {% endfor %}
+  {% endif %}
+</div>
+
+
+{% endblock body_main_content %}  
+
+{% block body_content_hidden %}
+
+
+{% endblock body_content_hidden %}
+
+
+
+
+{% block footer_javascript_page %}
+<script type="text/javascript">
+$(function() {
+    $("#tablesorter").tablesorter({widthFixed: true})
+    .tablesorterPager({container: $("#pager")});
+});
+</script>
+
+
+
+
+
+
+
+
+{% endblock footer_javascript_page %}
+

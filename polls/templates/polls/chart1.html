@@ -1,0 +1,95 @@
+{% extends "stat_info_basic.html" %}
+{% load staticfiles %}
+
+
+{% block chart_html %}
+
+<blockquote>
+
+<p>{% if productline %}产品线:<span class="label label-success">{{productline}}</span> || {% endif %}
+{% if adder %}创建者:<span class="label label-success">{{adder}}</span> || {% endif %}
+{% if status %}状态:<span class="label label-success">{{status}}</span> || {% endif %}
+from:<span class="label label-info">{{chart_show_fromtime}}</span>
+to:<span class="label label-info">{{chart_show_totime}}</span>
+</p>
+</blockquote>
+{% ifequal chart_status 'success' %}
+<div id="main" style="min-width:700px;height:400px"></div>
+{% endifequal %}
+{% endblock chart_html %}
+
+
+{% block chart_js %}
+{% ifequal chart_status 'success' %}
+<script type="text/javascript">
+$(function () {
+    $('#main').highcharts({
+        chart: {
+            zoomType: 'x',
+            spacingRight: 20
+        },
+        title: {
+            text: '任务申请情况统计图(天级)'
+        },
+        subtitle: {
+            text: document.ontouchstart === undefined ?
+                '选取区域可放大' :
+                'Pinch the chart to zoom in'
+        },
+        xAxis: {
+            type: 'datetime',
+            maxZoom: 5 * 24 * 3600000, // fourteen days
+            title: {
+                text: 'Date range'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Numbers of creat jobs'
+            }
+        },
+        tooltip: {
+            shared: true
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            area: {
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+                    stops: [
+                        [0, Highcharts.getOptions().colors[0]],
+                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                    ]
+                },
+                lineWidth: 1,
+                marker: {
+                    enabled: false
+                },
+                shadow: false,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                threshold: null
+            }
+        },
+
+        series: [{
+            type: 'area',
+            name: 'job numbers',
+            pointInterval: 24 * 3600 * 1000,
+            pointStart: Date.UTC({{chart1_year}}, {{chart1_month}}, {{chart1_day}}),
+            data: [
+            {% for value in statistic1_dict_num %}
+            {{value}}, 
+          {% endfor %}
+            ]
+        }]
+    });
+});       
+</script>
+{% endifequal%}
+{% endblock chart_js %}

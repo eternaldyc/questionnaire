@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% load i18n admin_static %}
+
+{% block head_title %}LOG IN{% endblock head_title %}
+{% block body_main %}
+
+
+
+<div class="row-fluid">
+  <div class="span4 offset4">
+    <h2 class="page-header">用户认证</h2>
+
+      <div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button>
+      <p><strong>用户名或密码不正确</strong></p> 
+      <p>{% for error in errors %}{{ error }}{% endfor %}</p>
+      </div>
+
+
+    <form class="form-horizontal" action="{{ app_path }}" method="post">
+      {%csrf_token%}
+      <div class="control-group">
+        <label class="control-label" for="username">用户名</label>
+        <div class="controls">
+          <input id="username" name="username" type="text" placehoder="请输入用户名">
+          {% if not form.this_is_the_login_form.errors %}<p class="help-block">{{ form.username.errors }}</p>{% endif %}
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="password">密码</label>
+        <div class="controls">
+          <input id="password" name="password" type="password" placehoder="请输入密码">
+          {% if not form.this_is_the_login_form.errors %}<p class="help-block">{{ form.password.errors }}</p>{% endif %}
+        </div>
+      </div>
+      {% url 'admin_password_reset' as password_reset_url %}
+      {% if password_reset_url %}
+      <div class="password-reset-link">
+        <a href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
+      </div>
+      {% endif %}
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">登录</button>
+        <input type="hidden" name="next" value="{{ next|escape }}" />
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+
+{% endblock body_main %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

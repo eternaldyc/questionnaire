@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% load i18n admin_static %}
+
+{% block head_title %}权限申请{% endblock head_title %}
+{% block body_main_content %}
+
+{% if errors %}
+<div class="alert alert-danger fade in">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  {% for item in errors %}
+  <p><strong>{{item}}</strong></p> 
+  {% endfor %}
+</div>
+{% endif %}
+
+
+{% if noti %}
+<div class="alert fade in">
+  <button type="button" class="close" data-dismiss="alert">×</button>
+  {% for item in noti%}
+  <p><strong>{{item}}</strong></p> 
+  {% endfor %}
+</div>
+{% endif %}
+{% if request.session.member_name %}
+<div class="row-fluid">
+  <div class="span8">
+    <h2 class="page-header">权限申请</h2>
+
+    <form class="form-horizontal" action="{% url 'mrmpf:privilege_request' %}" method="post">
+      {%csrf_token%}
+          
+      <div class="control-group">
+        <label class="control-label" for="user_name">申请人:</label>
+          <div class="controls">
+              <input class="" type="text" name="user_name" value="{{request.session.member_name}}" readonly/>   
+          </div>
+      </div>
+
+
+      <div class="control-group">
+        <!-- Select Basic -->
+        <label class="control-label" for="req_type">申请类型</label>
+        <div class="controls">
+          <select id="selector_type" name="req_type" class="input">
+            <option value="0">请选择申请类型</option>
+            <option value="1">用户权限类别更改</option>
+            <option value="2">产品线权限申请</option>
+          </select>
+      </div>
+
+      <p></p>
+      <p></p>
+
+      <div id="selector_privilege" class="control-group hide">
+        <label class="control-label" for="privilege">用户权限类别更改</label>
+        <div class="controls">
+          <select id="privilege" name="privilege" class="input">
+            <option value="0">请选择要加入的产品线</option>
+            <option value="1">普通用户</option>
+            <option value="3">未定义</option>
+            <option value="5">管理员</option>
+          </select>
+          <p class="help-block">权限分为三等级，目前是普通用户，未定义，管理员</p>
+        </div>
+      </div>
+
+
+      <div id="selector_productline" class="control-group hide">
+        <label class="control-label" for="productline">产品线权限申请</label>
+        <div class="controls">
+          <select id="productline" name="productline" class="input">
+            <option value="0">请选择要加入的产品线</option>
+            <option value="1">ECOM_IM</option>
+            <option value="11">WSP</option>
+            <option value="12">LBS</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">提交申请</button>
+        <input type="hidden" name="next" value="{{ next|escape }}" />
+      </div>
+    </form>
+  </div>
+</div>
+{% else %}
+          <div class="alert alert-info fade in">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            申请权限，请先<strong>登录</strong> :) 
+          </div>
+{% endif %}
+
+
+
+
+
+{% endblock body_main_content %}
+
+{% block footer_javascript_page %}
+
+
+
+
+
+
+
+
+{# dynamic_form #}
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#selector_type").change(function(){
+    var sel_type=$(this).val();
+
+    if (sel_type=="1"){
+
+      $("#selector_privilege").show(500);
+      $("#selector_productline").hide(500);
+    }
+    if (sel_type=="2"){
+      $("#selector_privilege").hide(500);
+      $("#selector_productline").show(500);
+    }
+
+  });
+});
+</script>
+
+
+
+
+{% endblock footer_javascript_page %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Welcome to our site!{% endblock title %}
+
+
+{% block body %}
+<body class="container default-bg">
+<div id="question_content" class="main" style="display: block;">
+    <div class="q-box">
+        
+        <div id="q{{ poll.id }}" class="circle" style="display: block;">
+            <div class="detail">
+                <div class="q-title">{{ poll.question }}</div>
+                <ul class="q-opt">
+
+        <form id="form_choice" action="{% url 'polls:questionnaire' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="question_id" value="{{poll.id}}">
+
+          {% for choice in poll.choice_set.all %}
+            <li id="{{ forloop.counter }}" class="question_choice">
+              <input type="radio" name="choice"  id="choice{{ forloop.counter }}" value="{{ forloop.counter }}" />
+              <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+            </li>
+          {% endfor %}
+
+        </form>
+        <div class="progress">
+           <div class="progress-bar" role="progressbar" aria-valuenow="70" 
+              aria-valuemin="0" aria-valuemax="100" style="width: {{view_progress}}%;">
+              <span class="sr-only">40% 完成</span>
+           </div>
+        </div>
+    </div>
+</div>
+</body>
+{% endblock body %}
+	  
+
+{% block footer_javascript_page %}
+
+
+
+
+<script>
+function IsMatchingAddress(str){
+    var myRegExp = /[a-z0-9-]{1,30}@[a-z0-9-]{1,65}.[a-z]+/ ;
+    return myRegExp.test(str);
+}
+function IsMatchingAge(str){
+    var myRegExp = /^[0-9-]+$/ ;
+    return myRegExp.test(str) && str.length <=2;
+}
+function IsNotEmpty(str){
+    if(str){
+    var length = str.replace(/(^\s+)|(\s+$)/g, "").length;
+    return length !== 0;
+    }
+    else{ return false;}
+}
+
+
+
+$(document).ready(function(){
+  $("#index,#r").css("min-height",$(window).height());
+    //$("#cas").attr("width",w).attr("height",h);
+  $(".q-box").css("min-height",$(window).height()*0.85);
+  $(".question_choice").click(function(){
+    var ids= $(this).children().eq(0).attr("checked",'checked');
+
+    $("#form_choice").submit();
+
+  });
+});
+//撑满屏幕
+
+</script>
+{% endblock footer_javascript_page %}

@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}统计信息{% endblock %}
+
+
+{% block body_main_title %}
+<div class="row-fluid">
+
+  <div class="span10 offset0">
+  <h1 class="page-header ">统计信息 <small>按用户名、产品线筛选,按运行状态反馈,按天级统计：</small></h1>
+  </div>
+</div>
+{% endblock body_main_title %}
+{% block body_main_content %}
+
+
+
+{% block chart_nav %}
+<ul class="nav nav-tabs">
+  <li {% ifequal chart_id '1'%}class="active"{% endifequal %}><a href="{% url 'mrmpf:stat_info' %}1/">任务数量统计</a></li>
+  <li {% ifequal chart_id '2'%}class="active"{% endifequal %}><a href="{% url 'mrmpf:stat_info' %}2/">状态分类统计</a></li>
+  <li {% ifequal chart_id '3'%}class="active"{% endifequal %}><a href="{% url 'mrmpf:stat_info' %}3/">平均时间统计</a></li>
+</ul>
+{% endblock chart_nav %}
+
+
+{# 筛选功能 #}
+<button type="button" id="showhide" class="btn btn-link pull-right">显示/隐藏高级筛选</button>
+<div id="content-control" class="well">
+  <h4>高级筛选</h4>
+  <form id="advfilter" class="form-inline" action="" method="post">{%csrf_token%}
+      <label class="control-label" for="productline">按产品线筛选 </label>
+        <select name="productline" class="host_select span2">
+          <option value="">全部</option>
+          <option>ECOM_IM</option>
+          <option>WSP</option>
+          <option>LBS</option>
+        </select>
+      <label class="control-label" for="status">按运行状态筛选 </label>
+        <select name="status" class="host_select">
+                <option value="">全部</option>
+                <option value="0">无效</option>
+                <option value="1">排队</option>
+                <option value="2">运行中</option>
+                <option value="3">结束</option>
+                <option value="4">用户停止</option>
+        </select>
+      <label class="control-label" for="adder">按创建者筛选 </label>
+        <select name="adder" class="host_select">
+                <option value="">全部</option>
+                <option value="jiweichao">jiweichao</option>
+                <option value="mashouyu">mashouyu</option>
+                <option value="donghaiwei">donghaiwei</option>
+        </select>
+
+    <div class="control-group">
+      <label class="control-label" for="fromtime">按创建时间筛选</label>
+      <div class="controls input-prepend input-append date form_datetime" data-date="2014-01-01 00:00:00" data-date-format="yyyy-mm-dd hh:ii:ss" data-link-field="fromtime">
+        <span class="add-on">From:</span>
+        <input id="id_starttime pull-left" name="fromtime"  type="text" value="" >
+        <span class="add-on"><i class="icon-remove"></i></span>
+        <span class="add-on"><i class="icon-th"></i></span>
+      </div>
+      <div class="controls input-prepend input-append date form_datetime" data-date="2014-01-01 00:00:00" data-date-format="yyyy-mm-dd hh:ii:ss" data-link-field="totime">
+        <span class="add-on">To:</span>
+        <input id="id_starttime pull-left" name="totime" size="16" type="text" value="" >
+        <span class="add-on"><i class="icon-remove"></i></span>
+        <span class="add-on"><i class="icon-th"></i></span>
+      </div>
+
+    </div>
+    <button type="submit" id="filter" class="btn btn-success pull-right">DRAW</button>
+  </form>
+</div>
+
+
+
+
+
+
+{# chart  #}
+{% block chart_html %}
+
+{% endblock chart_html %}
+
+{# 提示信息 #}
+{% for error in errors %}
+<h5>{{error}}</h5>
+{% endfor %}
+
+
+{% endblock body_main_content %}
+
+{% block footer_javascript_page %}
+{% block chart_js %}
+{% endblock chart_js %}
+<script type="text/javascript">
+    {# 隐藏筛选 #}
+    $(function() {
+        $("#showhide").click(function() {
+            $("#content-control").slideToggle("slow");
+        });
+    });
+    {# 添加任务 #}
+    $(function() {
+      $("#add_new_job").click(function() {
+        $("#add_job").slideToggle("slow");
+        $("#content-control").hide("slow");
+      });
+    });
+    {# 添加任务 #}
+    $(function() {
+        $("#close_add_new_job").click(function() {
+            $("#add_job").hide("slow");
+        });
+    });
+</script>
+
+
+
+<script type="text/javascript">
+  $('.form_datetime').datetimepicker({
+      //language:  'fr',
+      weekStart: 1,
+      todayBtn:  1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 2,
+      forceParse: 0,
+      showMeridian: 1
+  });
+</script>
+
+  <script type="text/javascript">
+  $(function(){
+    $('.host_select').chosen();
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+{% endblock footer_javascript_page %}
+

@@ -1,0 +1,515 @@
+{% extends "base.html" %}
+{% block title %}子系统管理{% endblock %}
+
+{% block body_main_title %}
+<div class="row-fluid">
+
+  <div class="span10 offset0">
+    <h1 class="page-header ">子系统管理 <small> 子系统{{req_id}}管理 </small></h1>
+  </div>
+</div>
+{% endblock body_main_title %}
+{% block body_main_content %}
+
+{# 删除模块确认操作 #}
+{% ifequal try_delete 'true' %}
+<div class="alert alert-block alert-error fade in">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <h2>操作有风险，请确认!!</h2>
+  <p>删除子系统拓扑可能导致相关的job出现问题，请务必认真确认后再执行操作 :)</p>
+  <form class="form-horizontal" action="{% url 'mrmpf:index' %}subsys/delete/{{req_id}}/{{tool_type}}/{{mod_const_id}}/{{group_id}}/" method="post">
+    {%csrf_token%}
+    <button type="submit" class="btn btn-danger">确认删除</button>
+    <a class="btn btn-primary btn-large" href="{% url 'mrmpf:model' %}">
+      放弃操作
+    </a>
+    <input type="hidden" name="confirm" value="true" />
+    <input type="hidden" name="req_id" value="{{req_id}}" />
+    <input type="hidden" name="tool_type" value="{{tool_type}}" />
+    <input type="hidden" name="mod_const_id" value="{{mod_const_id}}" />
+    <input type="hidden" name="group_id" value="{{group_id}}" />
+
+  </form>
+</div>
+
+{% else %}
+{% if have_right %}
+{# 操作按钮组 #}
+<div class="btn-group pull-right">
+  <a class="btn btn-primary" id="toggle_add_subsys_topo" href="#">新增拓扑</a>
+  <a class="btn btn-primary" id="toggle_modify_subsys_topo" href="#">修改拓扑</a>
+</div>
+{% endif %}
+{% endifequal %}
+
+
+
+
+<div class="well hide" id="add_subsys_topo">
+  <div class="modal-header"> <a href="#" id="close_add_subsys_topo" class="close" >x</a>
+    <h4>新增拓扑模块</h4>
+      <form class="form-horizontal" action="{% url 'mrmpf:subsys_add_topo' %}" method="post">
+        {%csrf_token%}
+        <div class="control-group">
+          <label class="control-label" for="tool_type">工具类型</label>
+          <div class="controls">
+            <select name="product_line" class="host_select">
+              <option value="">请选择工具类型</option>
+              {% for item in tooltype_list %}
+              <option value="{{item.id}}">{{item.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="mod_const_id">选择模块</label>
+          <div class="controls">
+            <select name="mod_const_id">
+              <option value="">请选择模块</option>
+              {% for item in model_list %}
+              <option value="{{item.id}}">{{item.name}}</option>
+              {% endfor %}
+            </select>
+            <p class="help-block">若没有所需模块，请先在模块管理中添加模块</p>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="platform">平台类型</label>
+          <div class="controls">
+            <input id="platform" name="platform" type="number" placeholder="platform">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="single_instance">是否单一实例</label>
+          <div class="controls">
+            <select name="single_instance" >       
+              <option value="0">否</option>
+              <option value="1">是</option>
+            </select>
+            <p class="help-block">是否要求机器上只存在一个实例</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="machine_group">申请机器所在组</label>
+          <div class="controls">
+            <select name="machine_group" >       
+              <option value="0">默认(系统随机查询)</option>
+              <option value="1">QA</option>
+              <option value="2">RD</option>
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="is_vm">是否虚拟机</label>
+          <div class="controls">
+            <select name="is_vm" >       
+              <option value="0">虚拟机物理机均可</option>
+              <option value="1">物理机</option>
+              <option value="2">虚拟机</option>
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="cluster_type">cluster_type</label>
+          <div class="controls">
+            <input id="cluster_type" name="cluster_type" type="number" placeholder="cluster_type">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="exclusive">是否独占该机器</label>
+          <div class="controls">
+            <select name="exclusive" >       
+              <option value="0">不独占</option>
+              <option value="1">独占</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">确认提交申请</button>
+          <input type="hidden" name="micro_sys" value="{{req_id}}" />
+        </div>
+      </form>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<div class="well hide" id="modify_subsys_topo">
+  <div class="modal-header"> <a href="#" id="close_modify_subsys_topo" class="close" >x</a>
+    <h4>修改已存在拓扑模块信息</h4>
+      <form class="form-horizontal" action="{% url 'mrmpf:subsys_modify_topo' %}" method="post">
+        {%csrf_token%}
+        <div class="control-group">
+          <label class="control-label" for="tool_type">工具类型</label>
+          <div class="controls">
+            <select name="product_line" class="host_select">
+              <option value="">请选择工具类型</option>
+              {% for item in tooltype_list %}
+              <option value="{{item.id}}">{{item.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="mod_const_id">选择模块</label>
+          <div class="controls">
+            <select name="mod_const_id">
+              <option value="">请选择模块</option>
+              {% for item in model_list %}
+              <option value="{{item.id}}">{{item.name}}</option>
+              {% endfor %}
+            </select>
+            <p> class="help-block">若没有所需模块，请先在模块管理中添加模块</p>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="group_id">组号</label>
+          <div class="controls">
+            <input id="group_id" name="group_id" type="number" placeholder="group_id">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="platform">平台类型</label>
+          <div class="controls">
+            <input id="platform" name="platform" type="number" placeholder="platform">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="single_instance">是否单一实例</label>
+          <div class="controls">
+            <select name="single_instance" >       
+              <option value="0">否</option>
+              <option value="1">是</option>
+            </select>
+            <p class="help-block">是否要求机器上只存在一个实例</p>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="machine_group">申请机器所在组</label>
+          <div class="controls">
+            <select name="machine_group" >       
+              <option value="0">默认(系统随机查询)</option>
+              <option value="1">QA</option>
+              <option value="2">RD</option>
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="is_vm">是否虚拟机</label>
+          <div class="controls">
+            <select name="is_vm" >       
+              <option value="0">虚拟机物理机均可</option>
+              <option value="1">物理机</option>
+              <option value="2">虚拟机</option>
+            </select>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="cluster_type">cluster_type</label>
+          <div class="controls">
+            <input id="cluster_type" name="cluster_type" type="number" placeholder="cluster_type">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="exclusive">是否独占该机器</label>
+          <div class="controls">
+            <select name="exclusive" >       
+              <option value="0">不独占</option>
+              <option value="1">独占</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">确认提交申请</button>
+          <input type="hidden" name="micro_sys" value="{{req_id}}" />
+        </div>
+      </form>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div id="content-table">
+{# 提示信息 #}
+{% for note in noti %}
+<h5>{{note}}</h5>
+{% endfor %}
+
+{# subsys表格 #}
+
+{% if subsys_records %}
+<div id="content-table">
+  <legend>子系统基本信息</legend>
+  <table class="table table-striped table-bordered table-condensed tablesorter">
+    <thead>
+      <tr>
+        <th>子系统id</th>
+        <th>子系统名称</th>
+        <th>产品线id</th>
+        <th>产品线名称</th>
+        <th>trl_product_line</th>
+        <th>trl用户名</th>
+        <th>is_default</th>
+        <th>is_delete</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in subsys_records %}
+      <tr>
+        {# <td class="id">{{item.id}}</td> #}
+        <td class="micro_sys_id">{{item.micro_sys_id}}</td>
+        <td class="ms_name">{{item.ms_name}}</td>
+        <td class="product_line">{{item.product_line}}</td>
+        <td class="product_line_name">{{item.product_line_name}}</td>
+        <td class="trl_product_line">{{item.trl_product_line}}</td>
+        <td class="trl_username">{{item.trl_username}}</td>
+        {# <td class="trl_password">{{item.trl_password}}</td> #}
+        <td class="is_default">{{item.is_default}}</td>
+        <td class="is_delete">{{item.is_delete}}</td>
+      </tr> 
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+  {# 提示信息 #}
+  {% for note in errors %}
+  <h5>{{note}}</h5>
+  {% endfor %}
+  {% endif %}
+</div>
+
+
+
+
+
+{# topology表格 #}
+  <div id="modeldetails" class="fade in hide">
+    <button type="button" class="close hide_detail">×</button>
+    <h4 id="modelname"></h4>
+      <div class= "span6">
+        CPU需求<div class="progress progress-info">
+          <div id="cpu" class="bar" style="width: 0%"></div>
+        </div>
+        MEMORY需求<div class="progress progress-success">
+          <div id="mem" class="bar" style="width: 0%"></div>
+        </div>
+        DISK需求<div class="progress progress-warning">
+          <div id="disk" class="bar" style="width: 0%"></div>
+        </div>
+      </div>
+      <div class= "span6">
+        other details...
+      </div>
+  </div>
+  {% for records in records_list %}
+  {% for item in records %}
+  {% if forloop.first %}
+  <div id="topology-table-{{item.tool_type}}">
+    <legend>工具类型:{{item.tooltype_name}}的拓扑</legend>
+
+  <table class="table table-striped table-bordered table-condensed" >
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>模块名</th>
+        <th>子系统名</th>
+        <th>平台类型</th>
+        <th>cpu需求</th>
+        <th>内存需求</th>
+        <th>硬盘需求</th>
+        <th>工作路径</th>
+        <th>推荐cpu</th>
+        <th>推荐内存</th>
+        <th>单一模块实例</th>
+        <th>集群类型</th>
+        <th>是否虚拟机</th>
+        <th>是否独占</th>
+        <th>模块id</th>
+        <th>工具类型</th>
+        <th>用户名</th>
+        <th>密码</th>
+        <th>工作路径</th>
+        <th>模块创建者</th>
+        <th>端口数量</th>
+        <th>端口区间</th>
+        <th>群组id</th>
+        <th>机器群组</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% endif%}
+      <tr>
+        <td class="id">{{item.mod_id}}</td>
+        <td class="model_name">{{item.name}}</td>
+        <td class="micro_sys">{{item.micro_sys}}</td>
+        <td class="platform">{{item.platform}}</td>
+        <td class="cpucore_require">{{item.cpucore_require}}</td>
+        <td class="mem_require">{{item.mem_require}}</td>
+        <td class="disk_require">{{item.disk_require}}</td>
+        <td class="work_path">{{item.work_path}}</td>
+        <td class="perf_cpucore_require">{{item.perf_cpucore_require}}</td>
+        <td class="perf_mem_require">{{item.perf_mem_require}}</td>
+        <td class="single_instance">{{item.single_instance}}</td>
+        <td class="cluster_type">{{item.cluster_type}}</td>
+        <td class="is_vm">{{item.is_vm}}</td>
+        <td class="exclusive">{{item.exclusive}}</td>
+        <td class="mod_const_id">{{item.mod_const_id}}</td>
+        <td class="tool_type">{{item.tool_type}}</td>
+        <td class="fix_username">{{item.fix_username}}</td>
+        <td class="fix_password">{{item.fix_password}}</td>
+        <td class="fix_workpath">{{item.fix_workpath}}</td>
+        <td class="mod_creator">{{item.mod_creator}}</td>
+        <td class="port_num">{{item.port_num}}</td>
+        <td class="port_interval">{{item.port_interval}}</td>
+        <td class="group_id">{{item.group_id}}</td>
+        <td class="machine_group">{{item.machine_group}}</td>
+        <td>
+          {% if have_right %}<a class="btn btn-danger" href="{% url 'mrmpf:index' %}subsys/delete/{{req_id}}/{{item.tool_type}}/{{item.mod_const_id}}/{{item.group_id}}/">删除该模块</a>{% endif %}</td>
+
+      </tr> 
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endfor %}
+
+</div>
+
+{% endblock body_main_content %}  
+
+{% block footer_javascript_page %}
+<script type="text/javascript">
+$(function() {
+    $("#tablesorter").tablesorter({widthFixed: true})
+    .tablesorterPager({container: $("#pager")});
+});
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    {# 新增子系统拓扑 #}
+    $(function() {
+      $("#toggle_add_subsys_topo").click(function() {
+        $("#add_subsys_topo").slideToggle("slow");
+        $("#modify_subsys_topo").hide("slow");
+      });
+    });
+    {# 新增子系统拓扑 #}
+    $(function() {
+        $("#close_add_subsys_topo").click(function() {
+            $("#add_subsys_topo").hide("slow");
+        });
+    });
+    {# 修改子系统拓扑 #}
+    $(function() {
+      $("#toggle_modify_subsys_topo").click(function() {
+        $("#modify_subsys_topo").slideToggle("slow");
+        $("#add_subsys_topo").hide("slow");
+      });
+    });
+    {# 修改子系统拓扑 #}
+    $(function() {
+        $("#close_modify_subsys_topo").click(function() {
+            $("#modify_subsys_topo").hide("slow");
+        });
+    });
+
+
+</script>
+
+<script type="text/javascript">
+$(".hide_detail").click(function() {
+  $("#modeldetails").hide("1000");
+});
+$(".model_name").click(function() {
+  var modelname=$(this).html(); 
+  var cpu="width: "+ $(this).parent().find(".cpucore_require").html()/16*100+"%";
+  var mem="width: "+ $(this).parent().find(".mem_require").html()+"%";
+  var disk="width: "+ $(this).parent().find(".disk_require").html()+"%";
+  $("#modeldetails").find("#modelname").html("模块名称:"+modelname);
+  $("#modeldetails").find("#cpu").attr({style:cpu});
+  $("#modeldetails").find("#mem").attr({style:mem});
+  $("#modeldetails").find("#disk").attr({style:disk});
+  $("#modeldetails").show("1000");
+});
+</script>
+
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    forceParse: 0,
+    showMeridian: 1
+    });
+</script>
+
+
+{# 显示model详细信息 #}
+<script type="text/javascript">
+$(".hide_detail").click(function() {
+  $("#modeldetails").hide("1000");
+});
+$(".model_name").click(function() {
+  var modelname=$(this).html(); 
+  var cpu="width: "+ $(this).parent().find(".cpucore_require").html()/16*100+"%";
+  var mem="width: "+ $(this).parent().find(".mem_require").html()+"%";
+  var disk="width: "+ $(this).parent().find(".disk_require").html()+"%";
+  $("#modeldetails").find("#modelname").html("模块名称:"+modelname);
+  $("#modeldetails").find("#cpu").attr({style:cpu});
+  $("#modeldetails").find("#mem").attr({style:mem});
+  $("#modeldetails").find("#disk").attr({style:disk});
+  $("#modeldetails").show("1000");
+});
+</script>
+
+
+
+{# dynamic_form #}
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#mod_number").change(function(){
+    var rep_number=$(this).val();
+    $(".dynamic_form").html("");
+    for(var i=0;i<rep_number;i++){
+      $(".dynamic_form").append('<legend>模块'+(i+1).toString()+'</legend>');
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="platform_'+i.toString()+'">platform</label><div class="controls"><input id="platform_'+i.toString()+'" name="platform_'+i.toString()+'" type="text" placeholder="请输入platform"></div></div>');
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="single_instance_'+i.toString()+'">single_instance</label><div class="controls"><input id="single_instance_'+i.toString()+'" name="single_instance_'+i.toString()+'" type="text" placeholder="请输入single_instance"></div></div>'); 
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="machine_group_'+i.toString()+'">machine_group</label><div class="controls"><input id="machine_group_'+i.toString()+'" name="machine_group_'+i.toString()+'" type="text" placeholder="请输入machine_group"></div></div>');
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="is_vm_'+i.toString()+'">is_vm</label><div class="controls"><input id="is_vm_'+i.toString()+'" name="is_vm_'+i.toString()+'" type="text" placeholder="请输入is_vm"></div></div>'); 
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="cluster_type_'+i.toString()+'">cluster_type</label><div class="controls"><input id="cluster_type_'+i.toString()+'" name="cluster_type_'+i.toString()+'" type="text" placeholder="请输入cluster_type"></div></div>');
+      $(".dynamic_form").append('<div class="control-group"><label class="control-label" for="exclusive_'+i.toString()+'">exclusive</label><div class="controls"><input id="exclusive_'+i.toString()+'" name="exclusive_'+i.toString()+'" type="text" placeholder="请输入exclusive"></div></div>');   
+    }
+  });
+});
+</script>
+
+
+
+
+{% endblock footer_javascript_page %}
+

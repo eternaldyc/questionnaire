@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+{% block title %}任务管理{% endblock %}
+
+{% block body_main_title %}
+<div class="row-fluid">
+
+  <div class="span10 offset0">
+    <h1 class="page-header ">任务管理 <small>任务详细信息</small></h1>
+  </div>
+</div>
+{% endblock body_main_title %}
+{% block body_main_content %}
+
+{# 提示信息 #}
+  {% if noti %}
+<div class="alert alert-block fade in">
+  {% for note in noti %}
+  <h5>{{note}}</h5>
+  {% endfor %}
+</div>
+ {% endif %}
+<div id="content-table">
+  <legend>基本信息</legend>
+  <table class="table table-striped table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>申请id</th>
+        <th>创建时间</th>
+        <th>工具类型</th>
+        <th>优先级</th>
+        <th>创建者姓名</th>
+        <th>rq_name</th>
+        <th>系统名称</th>
+        <th>产品线名称</th>
+        <th>状态(重试次数)</th>
+        <th>重试次数</th>
+        <th>是否停止</th>
+        <th>开始注册时间</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>创建者</th>
+        <th>拓扑id</th>
+        <th>工具类型id</th>
+        <th>微系统id</th>
+        <th>保留域</th>
+        <th>超时</th>
+        <th>mixin_mod</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in records %}
+      <tr>
+        <td class="id">{{item.id}}</td>
+        <td class="request_id">{{item.request_id}}</td>
+        <td class="create_time">{{item.create_time}}</td>
+        <td class="tool_type_name">{{item.tool_type_name}}</td>
+        <td class="priority">{{item.priority}}</td>
+        <td class="adder_cname">{{item.adder_cname}}</td>
+        <td class="rq_name">{{item.rq_name}}</td>
+        <td class="sys_name">{{item.sys_name}}</td>
+        <td class="product_name">{{item.product_name}}</td>
+        <td class="status">
+          {% ifequal item.status '0' %}<span title="无效" class="badge">无效</span>{% endifequal %}
+          {% ifequal item.status '1' %}<span title="排队中" class="badge badge-warning">排队中</span>{% endifequal %}
+          {% ifequal item.status '2' %}<span title="运行中" class="badge badge-info">运行中</span>{% endifequal %}
+          {% ifequal item.status '3' %}<span title="已完成" class="badge badge-success">已完成</span>{% endifequal %}
+          {% ifequal item.status '4' %}<span title="用户停止" class="badge badge-important">用户停止</span>{% endifequal %}
+        </td>
+        <td class="retry_count">{{item.retry_count}}</td>
+        <td class="to_stop">{{item.to_stop}}</td>
+        <td class="start_reg_time">{{item.start_reg_time}}</td>
+        <td class="start_time">{{item.start_time}}</td>
+        <td class="end_time">{{item.end_time}}</td>
+        <td class="adder">{{item.adder}}</td>
+        <td class="topology_id">{{item.topology_id}}</td>
+        <td class="tool_type">{{item.tool_type}}</td>
+        <td class="micro_sys_id">{{item.micro_sys_id}}</td>
+        <td class="preserve_field">{{item.preserve_field}}</td>
+        <td class="time_out">{{item.time_out}}</td>
+        <td class="mixin_mod">{{item.mixin_mod}}</td>
+        <td>
+                              
+ 
+          {% ifequal request.session.member_name item.adder %}
+          <a href="{% url 'mrmpf:index' %}job/stop/{{item.request_id}}/" class="btn btn-small btn-danger" >STOP</a>
+          {% else %}
+            {% if have_stop_right%}
+                    <a href="{% url 'mrmpf:index' %}job/stop/{{item.request_id}}/" class="btn btn-small btn-danger" >STOP</a>
+            {% endif %}        
+          {% endifequal %}
+
+
+        </td>
+      </tr> 
+    {% endfor %}
+    </tbody>
+  </table>
+{# topology表格 #}
+  <div id="modeldetails" class="fade in hide">
+    <button type="button" class="close hide_detail">×</button>
+    <h4 id="modelname"></h4>
+      <div class= "span6">
+        CPU需求<div class="progress progress-info">
+          <div id="cpu" class="bar" style="width: 0%"></div>
+        </div>
+        MEMORY需求<div class="progress progress-success">
+          <div id="mem" class="bar" style="width: 0%"></div>
+        </div>
+        DISK需求<div class="progress progress-warning">
+          <div id="disk" class="bar" style="width: 0%"></div>
+        </div>
+      </div>
+      <div class= "span6">
+        other details...
+      </div>
+  </div>
+  <div id="topology-table">
+  <legend>任务拓扑信息</legend>
+  <table class="table table-striped table-bordered table-condensed" >
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>模块名</th>
+        <th>是否虚拟机</th>
+        <th>模块类型</th>
+        <th>CPU需求</th>
+        <th>内存需求</th>
+        <th>硬盘需求</th>
+        <th>工作路径</th>
+        <th>机器组</th>
+        <th>资源id</th>
+        <th>集群类型</th>
+        <th>主机名</th>
+        <th>端口号</th>
+        <th>单个实例</th>
+        <th>cache时间</th>
+        <th>port_str</th>
+        <th>端口区间</th>
+        <th>是否独占</th>
+        <th>拓扑类型</th>
+        <th>密码</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in topology_info %}
+      <tr>
+        <td class="id">{{item.id}}</td>
+        <td class="model_name">{{item.mod_name}}</td>
+        <td class="is_vm">{{item.is_vm}}</td>
+        <td class="mod_type">{{item.mod_type}}</td>
+        <td class="cpucore_require">{{item.cpucore_require}}</td>
+        <td class="mem_require">{{item.mem_require}}</td>
+        <td class="disk_require">{{item.disk_require}}</td>
+        <td class="work_path">{{item.work_path}}</td>
+        <td class="machine_group">{{item.machine_group}}</td>
+        <td class="resource_id">{{item.resource_id}}</td>
+        <td class="cluster_type">{{item.cluster_type}}</td>
+        <td class="hostname">{{item.hostname}}</td>
+        <td class="port_num">{{item.port_num}}</td>
+        <td class="single_instance">{{item.single_instance}}</td>
+        <td class="cache_time">{{item.cache_time}}</td>
+        <td class="port_str">{{item.port_str}}</td>
+        <td class="port_interval">{{item.port_interval}}</td>
+        <td class="exclusive">{{item.exclusive}}</td>
+        <td class="topology_id">{{item.topology_id}}</td>
+        <td class="password">{{item.password}}</td>
+
+      </tr> 
+    {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock body_main_content %}  
+
+{% block footer_javascript_page %}
+<script type="text/javascript">
+$(function() {
+    $("#tablesorter").tablesorter({widthFixed: true})
+    .tablesorterPager({container: $("#pager")});
+});
+</script>
+
+
+<script type="text/javascript">
+    $(function() {
+        $("#showhide").click(function() {
+            $("#content-control").slideToggle("slow");
+        });
+    });
+</script>
+
+<script type="text/javascript">
+$(".hide_detail").click(function() {
+  $("#modeldetails").hide("1000");
+});
+$(".model_name").click(function() {
+  var modelname=$(this).html(); 
+  var cpu="width: "+ $(this).parent().find(".cpucore_require").html()/16*100+"%";
+  var mem="width: "+ $(this).parent().find(".mem_require").html()+"%";
+  var disk="width: "+ $(this).parent().find(".disk_require").html()+"%";
+  $("#modeldetails").find("#modelname").html("模块名称:"+modelname);
+  $("#modeldetails").find("#cpu").attr({style:cpu});
+  $("#modeldetails").find("#mem").attr({style:mem});
+  $("#modeldetails").find("#disk").attr({style:disk});
+  $("#modeldetails").show("1000");
+});
+</script>
+
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    forceParse: 0,
+    showMeridian: 1
+    });
+</script>
+
+
+{# 显示model详细信息 #}
+<script type="text/javascript">
+$(".hide_detail").click(function() {
+  $("#modeldetails").hide("1000");
+});
+$(".model_name").click(function() {
+  var modelname=$(this).html(); 
+  var cpu="width: "+ $(this).parent().find(".cpucore_require").html()/16*100+"%";
+  var mem="width: "+ $(this).parent().find(".mem_require").html()+"%";
+  var disk="width: "+ $(this).parent().find(".disk_require").html()+"%";
+  $("#modeldetails").find("#modelname").html("模块名称:"+modelname);
+  $("#modeldetails").find("#cpu").attr({style:cpu});
+  $("#modeldetails").find("#mem").attr({style:mem});
+  $("#modeldetails").find("#disk").attr({style:disk});
+  $("#modeldetails").show("1000");
+});
+</script>
+
+{% endblock footer_javascript_page %}
+

@@ -1,0 +1,112 @@
+{% extends "stat_info_basic.html" %}
+{% load staticfiles %}
+{% block title %}统计信息{% endblock %}
+
+
+
+
+
+{% block chart_html %}
+{# chart 2 #}
+<blockquote>
+<p>{% if productline %}产品线:<span class="label label-success">{{productline}}</span> || {% endif %}
+{% if adder %}创建者:<span class="label label-success">{{adder}}</span> || {% endif %}
+{% if status %}状态:<span class="label label-success">{% ifequal status '0' %}无效{% endifequal %}
+                {% ifequal status '1' %}排队{% endifequal %}
+                {% ifequal status '2' %}运行中{% endifequal %}
+                {% ifequal status '3' %}结束{% endifequal %}
+                {% ifequal status '4' %}用户停止{% endifequal %}</span> || {% endif %}
+from:<span class="label label-info">{{chart_show_fromtime}}</span>
+to:<span class="label label-info">{{chart_show_totime}}</span>
+</p>
+</blockquote>
+
+{% ifequal chart_status 'success'%}
+<blockquote>
+<div id="main" style="height:400px"></div>
+</blockquote>
+{% endifequal %}
+
+{% endblock chart_html %}
+
+{% block chart_js %}
+
+{% ifequal chart_status 'success'%}
+<script src="{% static "require.js" %}" ></script>
+<script >
+require.config({
+  packages: [
+      {
+          name: 'echarts',
+          location: '{% static "echarts-1.3.7/src" %}',      
+          main: 'echarts'
+      },
+      {
+          name: 'zrender',
+          location: '{% static "zrender-1.0.9/src"%}', 
+          main: 'zrender'
+      }
+  ]
+});
+
+
+var option = {
+    title : {
+        text: 'job状态统计图',
+        subtext: '',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+    legend: {
+        orient : 'vertical',
+        x : 'left',
+        data:['无效','排队','运行中','结束','用户停止']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : true,
+            dataView : {readOnly: false},
+            restore : true,
+            saveAsImage : true
+        }
+    },
+    calculable : true,
+    series : [
+        {
+            name:'状态',
+            type:'pie',
+            radius : [0, 110],
+            center: ['40%', 225],
+            data:[
+                {value:{{statistic2_dict.0}}, name:'无效'},
+                {value:{{statistic2_dict.1}}, name:'排队'},
+                {value:{{statistic2_dict.2}}, name:'运行中'},
+                {value:{{statistic2_dict.3}}, name:'结束'},
+                {value:{{statistic2_dict.4}}, name:'用户停止'}
+            ]
+        }
+    ]
+};
+       
+
+require(
+    [
+        'echarts',
+        'echarts/chart/line',
+        'echarts/chart/bar',
+        'echarts/chart/pie'
+    ],
+    function(ec) {
+        var myChart = ec.init(document.getElementById('main'));
+        myChart.setOption(option);
+    }
+)
+{% endifequal %}
+
+</script>
+
+{% endblock chart_js %}

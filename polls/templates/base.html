@@ -1,0 +1,205 @@
+{% load staticfiles %}
+{% block dtd %}{% endblock dtd %}
+{% block html_tag %}<!DOCTYPE html>{% endblock html_tag %}
+    {% block head %}<head>
+        <title>{% block title %}{{ page.title }}{% endblock title %}</title>
+        {% block head_favicon %}<link rel="icon" href="{% static "favicon.ico" %}" type="x-icon" />
+        <link rel="shortcut icon" href="/static/favicon.ico" type="x-icon" />{% endblock head_favicon %}
+        {% block head_meta %}
+            {% block head_meta_author%}{% endblock head_meta_author %}
+            {% block head_meta_charset %}<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />{% endblock head_meta_charset %}
+            {% block head_meta_contentlanguage %}<meta http-equiv="Content-Language" value="en-US" />{% endblock head_meta_contentlanguage %}
+            {% block head_meta_description %}{% endblock head_meta_description %}
+            {% block head_meta_keywords %}{% endblock head_meta_keywords %}
+            {% block head_meta_othertags %}
+            <meta name="viewport" content="width=device-width,initial-scale=1.0">
+            {% endblock head_meta_othertags %}
+            {% block head_meta_refresh %}{% endblock head_meta_refresh %}
+            {% block head_meta_robots %}{% endblock head_meta_robots %}
+        {% endblock head_meta %}
+        {% block head_rss %}{% endblock head_rss %}
+        {% block head_css %}
+            {% block head_css_site %}
+            <!-- Bootstrap -->
+            <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+            <link href="{% static "bootstrap/css/bootstrap-responsive.css" %}" rel="stylesheet">
+            <link href="{% static "bootstrap/css/bootstrap-datetimepicker.css" %}" rel="stylesheet">
+            <link href="{% static "chosen/chosen.css" %}" rel="stylesheet">
+            <link href="{% static "wireless_API.css" %}" rel="stylesheet">
+            
+
+
+            <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+            <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+            <!--[if lt IE 9]>
+                <script src="https://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+                <script src="https://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+            <![endif]-->
+            {% endblock head_css_site %}
+            {% block head_css_section %}{% endblock head_css_section %}
+            {% block head_css_page %}{% endblock head_css_page %}
+        {% endblock head_css %}
+        {% block head_section %}{% endblock head_section %}
+        {% block head_page %}{% endblock head_page %}
+        <!--[if lt IE 9]><script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    </head>{% endblock head %}
+    {% block body %}<body>
+        <div id="content">
+        {% block body_content %}
+            <div id="header">
+            {% block body_header %}
+                {% block body_header_banner %}
+                <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                  <div class="container">
+                    <div class="navbar-header">
+                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
+                      <a class="navbar-brand" href="#">wireless_API</a>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                      <ul class="nav navbar-nav">
+                        <li><a href="/">首页</a></li>
+                        <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="/flowentry/all/">查看交换机流表情况</a></li>
+                            <li><a href="http://59.66.19.126:8080/wm/staticflowentrypusher/clear/all/json">清空交换机流表</a></li>
+                            <li class="divider"></li>
+                            <li><a href="http://59.66.19.126:8080/wm/core/switch/all/queue/json">查看交换机队列情况</a></li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </nav><!-- /.navbar-collapse -->
+                <div class="page-header clearfix">
+                </div>
+
+                <div class="container">
+                  <div class="modal hide fade" id="login">
+                    <div class="modal-header"> <a href="#" class="close" data-dismiss="modal">x</a>
+                      <h4>用户登录</h4>
+                      <div class="modal-body">
+                        <form class="form-horizontal" action="" method="post">
+                          {%csrf_token%}
+                          <div class="form-group">
+                            <label class="control-label" for="username">用户名</label>
+                            <div class="controls">
+                              <input id="username" name="username" type="text" placeholder="请输入用户名">
+                              <p class="help-block">输入注册时的用户名</p>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label class="control-label" for="password">密码</label>
+                            <div class="controls">
+                              <input id="password" name="password" type="password" placeholder="请输入密码">
+                              <p class="help-block">请输入设置的密码</p>
+                            </div>
+                          </div>
+                          <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">登录</button>
+                            <input type="hidden" name="next" value="{{ next|escape }}" />
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endblock body_header_banner %}
+                {% block body_header_title %}<h1>{{ page.title }}</h1>{% endblock body_header_title %}
+                {% block body_header_breadcrumb %}{{ page.breadcrumb }}{% endblock body_header_breadcrumb %}
+            {% endblock body_header %}
+            </div>
+            {% block body_announcements %}{% endblock body_announcements %}
+            {% block body_main %}
+            <div class="container">
+              {% block body_main_title %}
+              <div class="row">
+
+                <div class="col-md-12 col-md-offset-0">
+                  <h1 class="page-header text-center">软件定义网络控制平台 <small>SDN+ platform</small></h1>
+                </div>
+              </div>
+              {% endblock body_main_title %}
+              <div class="row">
+                <div id="sidebar" class="col-md-2">
+                {% block body_main_sidebar %}
+                
+                <blockquote>
+                  {% if request.session.member_name %}
+                  <p class="lead text-success">{{request.session.member_name}}, 您好 :) </p>
+                  {% else %} 
+                  <p class="lead text-info">欢迎使用</p>{% endif %}
+                  </blockquote>
+                  <div class="wireless_API-link-border"><p>快速入口</p>
+                    <table class="table table-striped"style="width: 120px;">
+                      <tr><td><a href="/AP_info/1/">无线设备状态</a></td></tr>
+                      <tr><td><a href="/AP_info/2/">无线设备状态2</a></td></tr>
+                      <tr><td><a href="http://59.66.19.126:8080/ui/index.html">有线设备状态</a></td></tr>
+                      <tr><td><a href="/admin/">用户数据库管理</a></td></tr>
+                      <tr><td><a href="http://59.66.19.126:8080/wm/core/switch/all/queue/json">查看交换机队列情况</a></td></tr>
+                      <tr><td><a href="/flowentry/all/">查看交换机流表情况</a></td></tr>
+                      <tr><td><a href="http://59.66.19.126:8080/wm/staticflowentrypusher/clear/all/json">清空交换机流表</a></td></tr>
+                    </table>
+                  </div>
+                
+
+
+
+
+
+                {% endblock body_main_sidebar %}
+                </div>
+                <div class="col-md-10">
+                {% block body_main_content %}
+                {% endblock body_main_content %} 
+                </div> 
+              </div> 
+            {% endblock body_main %}
+            {% block body_content_hidden %}
+            {% endblock body_content_hidden %}
+        {% endblock body_content %}
+
+        <div id="footer">
+        {% block body_footer %}
+            {% block body_footer_breadcrumb %}{{ page.breadcrumb }}{% endblock body_footer_breadcrumb %}
+            {% block body_footer_legal %}{% endblock body_footer_legal %}
+        {% endblock body_footer %}
+        </div>
+    </body>{% endblock body %}
+    {% block footer %}
+        {% block footer_javascript %}
+            {% block footer_javascript_site %}
+
+
+
+            <!-- Include all compiled plugins (below), or include individual files as needed -->
+            <script src="{% static "bootstrap/js/jquery-2.1.1.min.js" %}"></script> 
+            <script src="{% static "bootstrap/js/bootstrap.min.js"%}"></script>
+
+            
+
+            <script src="{% static "bootstrap/js/bootstrap-datetimepicker.js"%}"></script>
+            <script src="{% static "bootstrap/js/locales/bootstrap-datetimepicker.zh-CN.js"%}" ></script>
+            <script src="{% static "chosen/chosen.jquery.js"%}"></script>
+            <script src="{% static "chosen/chosen.proto.js"%}"></script>
+
+            <script src="{% static "highcharts/highcharts.js"%}"></script>
+            <script src="{% static "highcharts/exporting.js"%}"></script>
+            <script src="{% static "tablesorter/jquery.tablesorter.js"%}"></script>
+            <script src="{% static "tablesorter/jquery.tablesorter.pager.js"%}"></script>
+            {% endblock footer_javascript_site %}
+            {% block footer_javascript_section %}{% endblock footer_javascript_section %}
+            {% block footer_javascript_page %}{% endblock footer_javascript_page %}
+        {% endblock footer_javascript %}
+    {% endblock footer %}
+</html>
+

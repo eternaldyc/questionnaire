@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Welcome to SDNController+!{% endblock %}
+
+
+{% block body_main_content %}
+<div class="span10">
+	<div class="panel-group" id="accordion1">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <a data-toggle="collapse" data-parent="#accordion1" href="#collapseOne"><h5>欢迎</h5></a>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse in">
+        <div class="panel-body">
+					<p>{{ poll.id }}  {{ poll.question }}  {{ poll.question }}</p> 
+					<form action="{% url 'polls:vote' poll.id %}" method="post">
+          {% csrf_token %}
+          {% for choice in poll.choice_set.all %}
+              <input type="radio" name="choice"  id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+              <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+          {% endfor %}
+          <input type="submit" value="Vote" />
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+      	<a data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo"><h5>DEMO</h5></a>
+      </div>
+      <div id="collapseTwo" class="panel-collapse collapse">
+        <div class="panel-body">
+					<iframe src="https://www.google.com/" frameborder="0" seamless="seamless" scrolling="auto" style="height:518px;width:1185px;"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default" >
+      <div class="panel-heading">
+        <a data-toggle="collapse" data-parent="#accordion1" href="#collapseThree"><h5>功能说明</h5></a>
+      </div>
+    	<div id="collapseThree" class="panel-collapse collapse">
+      	<div class="panel-body">
+      		<div id="chart1" style="min-width:1000px;height:300px"></div>
+      		<div id="chart2" style="min-width:1000px;height:300px"></div>
+       	</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body_main_content %}  
+	  
+
+{% block footer_javascript_page %}
+
+
+
+
+<script>
+$(document).ready(function(){
+  $("input").click(function(){
+   var id = $("input").attr("id");
+
+
+    $("form").submit();
+
+
+  });
+});
+</script>
+{% endblock footer_javascript_page %}
